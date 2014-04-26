@@ -6,9 +6,10 @@ from urllib import urlencode
 import json
 import requests
 
-with open('data/mingdao_api.json') as f:
+data_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
+with open(os.path.join(data_path, 'mingdao_api.json')) as f:
 	o = json.load(f)
-with open('data/mingdao_api_errorcode.json') as f:
+with open(os.path.join(data_path, 'mingdao_api_errorcode.json')) as f:
 	e = json.load(f)
 
 def genAct(item, api):
