@@ -10,6 +10,9 @@ distutils.core.setup(
 	author_email='sin.zou@mindao.com',
 	url='http://github.com/ipy/api_python',
 	description='Python SDK for mingdao.com, provides Mingdao OAuth2 authorization and API wrapper.',
+	install_requires=[
+		'requests',
+	],
 	classifiers=[
         "Development Status :: 3 - Alpha",
         "Operating System :: OS Independent",
