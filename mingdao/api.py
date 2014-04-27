@@ -35,6 +35,7 @@ def genAct(item, api):
 			raise Exception(item.get('api'),
 				result.get('error_code'), e.get(result.get('error_code')))
 		return result
+	act.__doc__ = item.get('description')
 	return act
 
 class Cat(object):
