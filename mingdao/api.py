@@ -24,7 +24,6 @@ def genAct(item, api):
 					args[api_arg.get('name')] = api_config[api_arg.get('name')]
 			elif api_arg.get('name') == 'access_token':
 				if api_arg.get('name') not in args.keys():
-					print api_arg, token_obj
 					args[api_arg.get('name')] = token_obj.get('access_token')
 			if api_arg.get('required'):
 				assert args.get(api_arg.get('name')), '%s is required for %s.' %\

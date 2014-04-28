@@ -1,28 +1,45 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+import sys
 from datetime import datetime
 import json
-from api import API
+from mingdao import API
 
-# The following configuration is only for testing purpose, please
-# replace it with your own app_key and app_secret from open.mingdao.com
-# 下列参数只供测试，请勿直接使用！
-# 请从 open.mingdao.com 上申请一个新的应用并获取 app_key 和 app_secret
+if len(sys.argv) == 2 and sys.argv[1] == 'source':
+	with(open(__file__)) as f:
+		print(f.read())
+	sys.exit(0)
+
+print('\nThis is a demo of Mingdao app, just for your referrence.\n')
+
+if len(sys.argv) != 3:
+	print('''Usage:
+	python -m mingdao source
+		Print source code of this demo.
+
+	python -m mingdao YOUR_APP_KEY YOUR_APP_SECRET
+		Start the demo. Please register your app on
+		http://open.mingdao.com and get the app_key
+		and app_secret. 
+		For this demo you should set redirect_uri as
+		http://localhost:8000/auth
+		''')
+	sys.exit(1)
+
 config = {
-	'app_key': 'B6FE5A96BE0582B94FBA2B77C295AB2',
-	'app_secret': 'B077C043EDDCFFBF4E9E5546883E24',
+	'app_key': sys.argv[1],
+	'app_secret': sys.argv[2],
 	'redirect_uri': 'http://localhost:8000/callback',
-	'throw_api_error': False # API 返回错误码时是否抛出异常
 }
 
 try:
 	import bottle
 except Exception, e:
-	print '''
+	print('''
 bottle.py is required to run the demo. Install bottle with pip:
 	pip install bottle
-	'''
+	''')
 else:
 	mingdao = API(config)
 	@bottle.get('/')
@@ -51,7 +68,26 @@ else:
 			datetime.fromtimestamp(mingdao.expires_at).isoformat())
 	@bottle.get('/test')
 	def test():
-		import sys
+		return bottle.template(u'''<html><head><title>示例</title></head><body>
+			<div><p>帐号接口</p>
+			% for item in account_apis:
+				<dt>{{item['path']}}</dt><dd><pre>{{item['result']}}</pre></dd>
+			% end
+			</div>
+			<div><p>动态更新接口</p>
+				<dt>followedposts['path']</dt><dd><pre>followedposts['result']</pre></dd>
+			</div>
+		</body></html>''', account_apis =[
+			{'path': 'passport/' + name, 'result': json.dumps(act(),ensure_ascii=False,indent=2)}\
+			for name, act in filter(
+				lambda actItem: actItem[0] != 'logout' and not filter(
+					lambda arg: arg.get('name') not in \
+						['access_token', 'app_key', 'app_secret']\
+						and arg.get('required'), actItem[1].info.get('args')),
+				mingdao.passport.getActs().iteritems())
+		], followedposts = {'path': 'post/followed',
+			'result': json.dumps(mingdao.post.followed({}),ensure_ascii=False,indent=2)}
+		)
 		return u'''<html><head><title>示例</title></head><body>
 			<div>''' u'''
 			<p>帐号接口</p>

@@ -9,28 +9,37 @@ Install:
 
 	pip install mingdao
 
-或下载后执行
+或下载后执行：
 
 	python setup.py install
 
-进行安装
+进行安装。
 
-依赖 requests 库, 如果需要直接运行 demo, 还需要 bottle 库, 可通过下面的命令安装依赖
+依赖 requests 库, 如果需要直接运行 demo, 还需要 bottle 库, 可通过下面的命令安装依赖：
 
 	pip install requests
 	pip install bottle
 
 Demo:
 =====
-安装完成后可以通过
 
-	python -m mingdao
+## 运行 demo
+明道 Python SDK 自带一个 demo 示例程序。
+请先在 http://open.mingdao.com 注册一个应用，并获取 app_key 和 app_secret. 应用的回调地址需要设为 http://localhost:8000/auth .
+运行 demo 的命令为：
 
-运行 demo，访问地址为 http://localhost:8000
+	python -m mingdao 你的app_key 你的app_secret
+
+访问地址为 http://localhost:8000。
+
+## 查看 demo 的源代码
+	
+	python -m mingdao source
+
 
 Usage:
 ======
-请先在 http://open.mingdao.com 注册一个应用，并获取 app_key 和 app_secret
+请先在 http://open.mingdao.com 注册一个应用，并获取 app_key 和 app_secret.
 
 ## Config
 
@@ -48,6 +57,10 @@ Usage:
 用户登录后会回调应用的回调地址，并传递一个 code 参数，可用 api.authorize 方法进行授权：
 
 	api.authorize(code)
+
+查看 access_token：
+
+	api.access_token
 
 查看授权过期时间：
 

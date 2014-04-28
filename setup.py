@@ -1,11 +1,11 @@
 import distutils.core
 
-version = '0.1.4'
+version = '0.1.5'
 
 distutils.core.setup(
 	name='mingdao',
 	version=version,
-    keywords = ('mingdao', 'oauth2'),
+    keywords = ('mingdao', 'oauth2', 'SDK'),
 	packages=['mingdao'],
     package_dir={'mingdao':'mingdao'},
     package_data={'mingdao':['data/*.json']},
